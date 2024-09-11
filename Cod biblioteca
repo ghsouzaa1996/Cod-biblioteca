@@ -1,0 +1,119 @@
+# Solução de Software implantada 
+# Requisitos: 
+# Cadastrar livros: adicionar novos livros ao acervo. 
+# Consultar acervo: verificar os livros cadastrados. 
+# Editar livros: modificar informações de um livro cadastrado. 
+# Registrar empréstimos: manter controle sobre os livros emprestados. 
+  
+Software em Python: 
+  
+biblioteca = {} 
+  
+# Função para cadastrar um novo livro 
+def cadastrar_livro(): 
+    titulo = input("Digite o título do livro: ") 
+    autor = input("Digite o autor do livro: ") 
+    ano = input("Digite o ano de publicação: ") 
+    genero = input("Digite o gênero do livro: ") 
+    biblioteca[titulo] = { 
+        "autor": autor, 
+        "ano": ano, 
+        "gênero": genero, 
+        "emprestado": False, 
+        "emprestado_para": "" 
+    } 
+    print(f"O livro '{titulo}' foi cadastrado com sucesso!\n") 
+  
+# Função para consultar o acervo 
+def consultar_acervo(): 
+    if biblioteca: 
+        print("Livros cadastrados no acervo:\n") 
+        for titulo, dados in biblioteca.items(): 
+            status = "Emprestado" if dados["emprestado"] else "Disponível" 
+            if status == "Emprestado": 
+                print(f"Título: {titulo} | Autor: {dados['autor']} | Ano: {dados['ano']} | Gênero: {dados['gênero']} | Status: {status} | Emprestado para: {dados['emprestado_para']}") 
+            else: 
+                print(f"Título: {titulo} | Autor: {dados['autor']} | Ano: {dados['ano']} | Gênero: {dados['gênero']} | Status: {status}") 
+    else: 
+        print("Nenhum livro cadastrado no acervo.\n") 
+  
+# Função para editar informações de um livro 
+def editar_livro(): 
+    titulo = input("Digite o título do livro que deseja editar: ") 
+    if titulo in biblioteca: 
+        print("O que deseja editar?") 
+        print("1. Autor") 
+        print("2. Ano de publicação") 
+        print("3. Gênero") 
+        opcao = input("Escolha uma opção: ") 
+        if opcao == "1": 
+            novo_autor = input("Digite o novo autor: ") 
+            biblioteca[titulo]["autor"] = novo_autor 
+        elif opcao == "2": 
+            novo_ano = input("Digite o novo ano de publicação: ") 
+            biblioteca[titulo]["ano"] = novo_ano 
+        elif opcao == "3": 
+            novo_genero = input("Digite o novo gênero: ") 
+            biblioteca[titulo]["gênero"] = novo_genero 
+        print(f"As informações do livro '{titulo}' foram atualizadas com sucesso!\n") 
+    else: 
+        print(f"O livro '{titulo}' não foi encontrado no acervo.\n") 
+  
+# Função para registrar o empréstimo de um livro 
+def registrar_emprestimo(): 
+    titulo = input("Digite o título do livro que deseja emprestar: ") 
+    if titulo in biblioteca: 
+        if not biblioteca[titulo]["emprestado"]: 
+            biblioteca[titulo]["emprestado"] = True 
+            nome_pessoa = input("Digite o nome de quem está pegando emprestado: ") 
+            biblioteca[titulo]["emprestado_para"] = nome_pessoa 
+            print(f"O livro '{titulo}' foi emprestado com sucesso!\n") 
+        else: 
+            print(f"O livro '{titulo}' já está emprestado.\n") 
+    else: 
+        print(f"O livro '{titulo}' não foi encontrado no acervo.\n") 
+  
+# Função para devolver um livro 
+def devolver_livro(): 
+    titulo = input("Digite o título do livro que deseja devolver: ") 
+    if titulo in biblioteca: 
+        if biblioteca[titulo]["emprestado"]: 
+            biblioteca[titulo]["emprestado"] = False 
+            biblioteca[titulo]["emprestado_para"] = "" 
+             
+            print(f"O livro '{titulo}' foi devolvido com sucesso!\n") 
+        else: 
+            print(f"O livro '{titulo}' não está emprestado.\n") 
+    else: 
+        print(f"O livro '{titulo}' não foi encontrado no acervo.\n") 
+  
+# Menu principal do sistema 
+def menu(): 
+    while True: 
+        print("\n--- Sistema de Gestão de Acervo da Biblioteca ---") 
+        print("1. Cadastrar novo livro") 
+        print("2. Consultar acervo") 
+        print("3. Editar livro") 
+        print("4. Registrar empréstimo") 
+        print("5. Devolver livro") 
+        print("6. Sair") 
+        opcao = input("Escolha uma opção: ") 
+  
+        if opcao == "1": 
+            cadastrar_livro() 
+        elif opcao == "2": 
+            consultar_acervo() 
+        elif opcao == "3": 
+            editar_livro() 
+        elif opcao == "4": 
+            registrar_emprestimo() 
+        elif opcao == "5": 
+            devolver_livro() 
+        elif opcao == "6": 
+            print("Encerrando o sistema. Até logo!") 
+            break 
+        else: 
+            print("Opção inválida! Tente novamente.\n") 
+  
+# Executar o sistema 
+menu() 
